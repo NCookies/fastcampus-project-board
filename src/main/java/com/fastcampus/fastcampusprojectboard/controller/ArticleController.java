@@ -21,4 +21,11 @@ public class ArticleController {
         map.addAttribute("articles", List.of());
         return "articles/index";
     }
+
+    @GetMapping("/{articleId}")
+    public String article(ModelMap map) {
+        map.addAttribute("article", "article");     // TODO: 추후 실제 데이터 넣어줘야 함
+        map.addAttribute("articleComments", List.of());
+        return "articles/detail";
+    }
 }
