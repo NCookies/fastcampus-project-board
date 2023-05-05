@@ -1,5 +1,6 @@
 package com.fastcampus.fastcampusprojectboard.domain;
 
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -10,7 +11,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Getter
-@ToString
+@ToString(callSuper = true)
 @Table(indexes = {
         @Index(columnList = "title"),
         @Index(columnList = "hashtag"),
@@ -24,41 +25,30 @@ public class Article extends AuditingFields {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // 제목
-    @Setter @Column(nullable = false)
-    private String title;
+    @Setter @ManyToOne(optional = false) private UserAccount userAccount; // 유저 정보 (ID)
 
-    // 본문
-    @Setter @Column(nullable = false, length = 10000)
-    private String content;
+    @Setter @Column(nullable = false) private String title; // 제목
+    @Setter @Column(nullable = false, length = 10000) private String content; // 본문
 
-    // 해시태그
-    @Setter
-    private String hashtag;
+    @Setter private String hashtag; // 해시태그
 
-    /*
-     * 여기에서 ToString.Exclude를 하는 이유
-     * Article 클래스의 lombok ToString 옵션을 설정해두었는데,
-     * 이렇게 되면 ArticleComment를 Set으로 가지는 구현체를 String으로 구현하고,
-     * ArticleComment 내부에 있는 article 객체를 String으로 만들게 되면서 순환참조가 발생한다.
-     * 이를 막기 위해 해당 옵션을 사용하는 것
-     */
     @ToString.Exclude
-    @OrderBy("id")
+    @OrderBy("createdAt DESC")
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
     private final Set<ArticleComment> articleComments = new LinkedHashSet<>();
 
 
     protected Article() {}
 
-    private Article(String title, String content, String hashtag) {
+    private Article(UserAccount userAccount, String title, String content, String hashtag) {
+        this.userAccount = userAccount;
         this.title = title;
         this.content = content;
         this.hashtag = hashtag;
     }
 
-    public static Article of(String title, String content, String hashtag) {
-        return new Article(title, content, hashtag);
+    public static Article of(UserAccount userAccount, String title, String content, String hashtag) {
+        return new Article(userAccount, title, content, hashtag);
     }
 
     @Override
@@ -72,4 +62,5 @@ public class Article extends AuditingFields {
     public int hashCode() {
         return Objects.hash(id);
     }
+
 }
