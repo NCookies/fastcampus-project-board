@@ -2,7 +2,6 @@ package com.fastcampus.fastcampusprojectboard.response;
 
 import com.fastcampus.fastcampusprojectboard.dto.ArticleWithCommentsDto;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -17,7 +16,7 @@ public record ArticleWithCommentResponse(
         String email,
         String nickname,
         Set<ArticleCommentResponse> articleCommentsResponse
-) implements Serializable {
+) {
 
     public static ArticleWithCommentResponse of(Long id, String title, String content, String hashtag, LocalDateTime createdAt, String email, String nickname, Set<ArticleCommentResponse> articleCommentResponses) {
         return new ArticleWithCommentResponse(id, title, content, hashtag, createdAt, email, nickname, articleCommentResponses);
