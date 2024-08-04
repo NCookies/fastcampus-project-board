@@ -1,10 +1,12 @@
 package com.fastcampus.fastcampusprojectboard.service;
 
 import com.fastcampus.fastcampusprojectboard.domain.Article;
-import com.fastcampus.fastcampusprojectboard.domain.type.SearchType;
+import com.fastcampus.fastcampusprojectboard.domain.UserAccount;
+import com.fastcampus.fastcampusprojectboard.domain.constant.SearchType;
 import com.fastcampus.fastcampusprojectboard.dto.ArticleDto;
 import com.fastcampus.fastcampusprojectboard.dto.ArticleWithCommentsDto;
 import com.fastcampus.fastcampusprojectboard.repository.ArticleRepository;
+import com.fastcampus.fastcampusprojectboard.repository.UserAccountRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -20,7 +22,9 @@ import java.util.List;
 @Transactional
 @Service
 public class ArticleService {
+
     private final ArticleRepository articleRepository;
+    private final UserAccountRepository userAccountRepository;
 
     @Transactional(readOnly = true)
     public Page<ArticleDto> searchArticles(SearchType searchType, String searchKeyword, Pageable pageable) {
@@ -40,24 +44,32 @@ public class ArticleService {
     }
 
     @Transactional(readOnly = true)
-    public ArticleWithCommentsDto getArticle(Long articleId) {
+    public ArticleWithCommentsDto getArticleWithComments(Long articleId) {
         return articleRepository.findById(articleId)
                 .map(ArticleWithCommentsDto::from)
                 .orElseThrow(() -> new EntityNotFoundException("게시글이 없습니다 - articleId: " + articleId));
     }
 
+    @Transactional(readOnly = true)
+    public ArticleDto getArticle(Long articleId) {
+        return articleRepository.findById(articleId)
+                .map(ArticleDto::from)
+                .orElseThrow(() -> new EntityNotFoundException("게시글이 없습니다 - articleId: " + articleId));
+    }
+
     public void saveArticle(ArticleDto dto) {
-        articleRepository.save(dto.toEntity());
+        UserAccount userAccount = userAccountRepository.getReferenceById(dto.userAccountDto().userId());
+        articleRepository.save(dto.toEntity(userAccount));
     }
 
     // 클래스 레벨 @Transactional에 의해서 메소드 단위로 트랜잭션이 묶여 있다.
     // 그래서 트랜잭션이 끝날 때 영속성 컨텍스트는 article이 변한 것을 감지해낸다.
     // 그 감지 부분에 대해 쿼리를 날리기 때문에 save() 메소드를 호출하지 않아도 된다.
     // 만약 코드 단위로 업데이트 한다는 것을 명시하고 싶다면 save() 또는 saveAndFlush()를 사용해도 된다.
-    public void updateArticle(ArticleDto dto) {
+    public void updateArticle(Long articleId, ArticleDto dto) {
         try {
             // findById와 다르게 select 쿼리를 사용하지 않고 조회할 수 있다.
-            Article article = articleRepository.getReferenceById(dto.id());
+            Article article = articleRepository.getReferenceById(articleId);
             if (dto.title() != null) { article.setTitle(dto.title()); }
             if (dto.content() != null) { article.setContent(dto.content()); }
             article.setHashtag(dto.hashtag());
