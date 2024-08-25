@@ -25,7 +25,7 @@ class JpaRepositoryTest {
     private final ArticleCommentRepository articleCommentRepository;
     private final UserAccountRepository userAccountRepository;
 
-    public JpaRepositoryTest(
+    JpaRepositoryTest(
             @Autowired ArticleRepository articleRepository,
             @Autowired ArticleCommentRepository articleCommentRepository,
             @Autowired UserAccountRepository userAccountRepository
@@ -104,9 +104,9 @@ class JpaRepositoryTest {
     // 이를 해결하기 위해 테스트에서 사용할 전용 config 클래스를 생성해주었다.
     @EnableJpaAuditing
     @TestConfiguration  // 테스트할 때만 등록되는 Bean
-    public static class TestJpaConfig {
+    static class TestJpaConfig {
         @Bean
-        public AuditorAware<String> auditorAware() {
+        AuditorAware<String> auditorAware() {
             return () -> Optional.of("uno");
         }
     }

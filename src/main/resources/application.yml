@@ -1,4 +1,4 @@
-debug: false    # ?? ??? ?? ?? false? ??
+debug: false
 management.endpoints.web.exposure.include: "*"
 
 logging:
@@ -14,8 +14,8 @@ spring:
     password: thisisTESTpw!
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
-    defer-datasource-initialization: true   # ???? ?? ?? ??
-    hibernate.ddl-auto: create      # jpa?? ??? ???? ??
+    defer-datasource-initialization: true
+    hibernate.ddl-auto: create
     show-sql: true
     properties:
       hibernate.format_sql: true

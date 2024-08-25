@@ -11,7 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
@@ -21,7 +20,7 @@ class PaginationServiceTest {
 
     private final PaginationService sut;
 
-    public PaginationServiceTest(@Autowired PaginationService paginationService) {
+    PaginationServiceTest(@Autowired PaginationService paginationService) {
         this.sut = paginationService;
     }
 
