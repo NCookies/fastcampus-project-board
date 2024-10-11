@@ -1,9 +1,7 @@
 package com.fastcampus.fastcampusprojectboard.config;
 
-import com.fastcampus.fastcampusprojectboard.dto.UserAccountDto;
 import com.fastcampus.fastcampusprojectboard.dto.security.BoardPrincipal;
 import com.fastcampus.fastcampusprojectboard.dto.security.KakaoOAuth2Response;
-import com.fastcampus.fastcampusprojectboard.repository.UserAccountRepository;
 import com.fastcampus.fastcampusprojectboard.service.UserAccountService;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;

@@ -1,8 +1,6 @@
 package com.fastcampus.fastcampusprojectboard.config;
 
-import com.fastcampus.fastcampusprojectboard.domain.UserAccount;
 import com.fastcampus.fastcampusprojectboard.dto.UserAccountDto;
-import com.fastcampus.fastcampusprojectboard.repository.UserAccountRepository;
 import com.fastcampus.fastcampusprojectboard.service.UserAccountService;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
