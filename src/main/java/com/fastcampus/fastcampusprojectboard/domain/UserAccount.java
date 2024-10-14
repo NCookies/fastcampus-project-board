@@ -42,7 +42,7 @@ public class UserAccount extends AuditingFields {
 
     // 일반 회원 가입
     public static UserAccount of(String userId, String userPassword, String email, String nickname, String memo) {
-        return new UserAccount(userId, userPassword, email, nickname, memo, null);
+        return UserAccount.of(userId, userPassword, email, nickname, memo, null);
     }
 
     // OAuth 2.0 회원 가입
