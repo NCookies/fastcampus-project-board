@@ -32,6 +32,7 @@ public class SecurityConfig {
         return http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                        .requestMatchers("/api/**").permitAll()
                         .requestMatchers(
                                 HttpMethod.GET,
                                 "/",
@@ -47,6 +48,8 @@ public class SecurityConfig {
                                 .userService(oAuth2UserService)
                         )
                 )
+                // 웹 브라우저(일반 유저)로 접근하는 경우에는 csrf 보호 기능을 켜고,
+                // `/api/**`로 접근(관리자)하는 경우에는 csrf 보호 기능을 적용하지 않는다.
                 .csrf(csrf -> csrf.ignoringRequestMatchers("/api/**"))
                 .build();
     }
