@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 // API 문서에서 확인할 수 있는 정보들을 직접 설정
 @Projection(name = "withoutPassword", types = { UserAccount.class })
 public interface UserAccountProjection {
-    Long getUserId();
+    String getUserId();
     String getEmail();
     String getNickname();
     String getMemo();
